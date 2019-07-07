@@ -15,6 +15,7 @@ This project is a good head string to start.
 
 ```bash
     npm -i
+    npm run build
 ```
 
 
