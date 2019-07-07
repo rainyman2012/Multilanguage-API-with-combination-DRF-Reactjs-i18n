@@ -1,0 +1,1 @@
+# boilerplate_for_django_react_redux_projects
