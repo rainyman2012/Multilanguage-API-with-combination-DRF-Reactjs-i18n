@@ -8,4 +8,4 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('__all__')
+        fields = ('name', 'description')

@@ -7,12 +7,14 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
 
     'django.contrib.sites',
     'allauth',
@@ -56,7 +58,8 @@ TEMPLATES = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
+
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
@@ -81,3 +84,15 @@ REST_FRAMEWORK = {
 ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
+def gettext(s):
+    return s
+
+
+LANGUAGES = (
+    ('fa', gettext('Farsi')),
+    ('en', gettext('English')),
+)
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'fa'

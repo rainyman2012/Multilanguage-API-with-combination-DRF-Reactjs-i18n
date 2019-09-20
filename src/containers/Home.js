@@ -98,7 +98,8 @@ class HomepageLayout extends Component {
               <Grid.Column width={8}>
                 <Header as="h3" style={{ fontSize: "2em" }}>
                   <p> {this.props.language} </p>
-                  We Help Companies and Companions
+                  <p> {this.props.name}</p>
+                  <p> {this.props.description}</p>
                 </Header>
               </Grid.Column>
             </Grid.Row>

@@ -12,6 +12,3 @@ router.register(r'', PostViewSet, base_name='post')
 
 
 urlpatterns = router.urls
-
-for url in router.urls:
-    print(url, '\n')

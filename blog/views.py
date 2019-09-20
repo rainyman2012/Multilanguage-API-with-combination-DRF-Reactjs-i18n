@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-
+from django.utils import translation
 from pudb import set_trace
 
 # from rest_framework import viewsets
@@ -25,3 +25,9 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
     lookup_field = 'pk'
+
+    def list(self, request, *args, **kwargs):
+        response_language = request.headers['Accept-Language']
+        translation.activate(response_language)
+
+        return super().list(request, *args, **kwargs)

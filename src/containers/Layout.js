@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import {
   Container,
   Divider,
@@ -11,22 +12,64 @@ import {
   Segment
 } from "semantic-ui-react";
 import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { logout } from "../store/actions/auth";
 
 class CustomLayout extends React.Component {
-  state = { language: "En" };
+  state = { language: "en" };
+  componentWillMount() {
+    axios({
+      method: "get",
+      headers: {
+        "Accept-Language": this.state.language,
+        "Content-Type": "application/json"
+      },
+      url: "http://127.0.0.1:8000/posts/"
+    })
+      .then(res => {
+        const post = res.data;
+        const changed_data = { ...this.state, ...post[0] };
+        this.setState(changed_data);
+        // const token = res.data.key;
+        // const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        // localStorage.setItem("token", token);
+        // localStorage.setItem("expirationDate", expirationDate);
 
+        // dispatch(checkAuthTimeout(3600));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   handleLanguage = (event, data) => {
-    this.setState({ language: data.text });
+    this.setState({ language: data.text, name: "", description: "" });
+
+    axios({
+      method: "get",
+      headers: {
+        "Accept-Language": data.text,
+        "Content-Type": "application/json"
+      },
+      url: "http://127.0.0.1:8000/posts/"
+    })
+      .then(res => {
+        const post = res.data;
+        const changed_data = { ...this.state, ...post[0] };
+        this.setState(changed_data);
+        // const token = res.data.key;
+        // const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        // localStorage.setItem("token", token);
+        // localStorage.setItem("expirationDate", expirationDate);
+
+        // dispatch(checkAuthTimeout(3600));
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {
     let elements = React.Children.toArray(this.props.children);
     if (elements.length === 1) {
-      elements = React.cloneElement(elements[0], {
-        language: this.state.language
-      });
+      elements = React.cloneElement(elements[0], this.state);
     }
 
     console.log(elements);
@@ -39,8 +82,8 @@ class CustomLayout extends React.Component {
             <Menu.Item header>
               <Dropdown text="Language">
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={this.handleLanguage} text="Fa" />
-                  <Dropdown.Item onClick={this.handleLanguage} text="En" />
+                  <Dropdown.Item onClick={this.handleLanguage} text="fa" />
+                  <Dropdown.Item onClick={this.handleLanguage} text="en" />
                 </Dropdown.Menu>
               </Dropdown>
             </Menu.Item>
@@ -48,21 +91,6 @@ class CustomLayout extends React.Component {
             <Link to="/">
               <Menu.Item header>Home</Menu.Item>
             </Link>
-
-            {authenticated ? (
-              <Menu.Item header onClick={() => this.props.logout()}>
-                Logout
-              </Menu.Item>
-            ) : (
-              <React.Fragment>
-                <Link to="/login">
-                  <Menu.Item header>Login</Menu.Item>
-                </Link>
-                <Link to="/signup">
-                  <Menu.Item header>Signup</Menu.Item>
-                </Link>
-              </React.Fragment>
-            )}
           </Container>
         </Menu>
         {elements}
@@ -71,21 +99,4 @@ class CustomLayout extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    authenticated: state.auth.token !== null
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    logout: () => dispatch(logout())
-  };
-};
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(CustomLayout)
-);
+export default CustomLayout;
