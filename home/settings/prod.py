@@ -3,7 +3,9 @@
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS += ['http://domain.com']
+
+# You must adjust this line if you want a full secure App
+ALLOWED_HOSTS += ['*']
 WSGI_APPLICATION = 'home.wsgi.prod.application'
 
 DATABASES = {
@@ -24,4 +26,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# You must change this if you want a full secure App
+CORS_ORIGIN_ALLOW_ALL = True
+CROS_ALLOW_CREDENTIALS = True
+
