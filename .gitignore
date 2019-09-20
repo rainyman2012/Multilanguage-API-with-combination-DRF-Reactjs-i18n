@@ -4,7 +4,7 @@
 
 ### Django ###
 package-lock.*
-vscode
+.vscode/launch.json
 *.log
 *.pot
 *.pyc
